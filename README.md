@@ -87,7 +87,7 @@ online-ordering-system/
     └── package.json       # npm 配置
 ```
 
-## 🎯 核心功能讲解（面试必备）
+## 🎯 核心功能讲解
 
 ### 1. 购物车状态管理
 使用 Vue 响应式数组管理购物车数据，同时持久化到 localStorage：
@@ -114,12 +114,3 @@ GET    /api/order/user/{id}    查询用户订单
 
 ### 3. 订单创建流程
 涉及多个步骤：校验购物车 → 计算金额 → 锁定库存 → 生成订单号 → 扣减库存
-
-## 📧 联系我
-
-- GitHub：[@LeslieNice1](https://github.com/LeslieNice1)
-- 邮箱：xxxx@example.com
-
----
-
-⭐ 如果这个项目对你有帮助，欢迎给个 Star！
