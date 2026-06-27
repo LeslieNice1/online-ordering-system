@@ -1,95 +1,125 @@
-# 线上订餐系统
+# 🍔 线上订餐系统
 
-基于 Spring Boot + Vue 3 的全栈订餐平台，支持用户浏览餐厅、查看菜单、加入购物车、提交订单等功能。
+> 一个基于 Spring Boot + Vue 3 的线上订餐平台，支持餐厅浏览、菜单查看、购物车、在线下单等功能。
 
-## 技术栈
+## ✨ 功能特性
+
+- 🏠 **餐厅浏览**：查看周边热门餐厅，支持评分、销量排序
+- 📋 **菜单查看**：浏览餐厅详细菜单，支持菜品分类
+- 🛒 **购物车**：添加菜品到购物车，实时计算总价
+- 📦 **在线下单**：填写配送地址和联系电话，提交订单
+- 📋 **订单管理**：查看历史订单，跟踪订单状态
+
+## 🛠 技术栈
 
 ### 后端
-- Java 17 + Spring Boot 3.2
-- MyBatis-Plus
-- MySQL 8.0
-- JWT 认证
-- Lombok
+- Spring Boot 3.x
+- MyBatis
+- MySQL
+- Redis（缓存）
 
 ### 前端
-- Vue 3 + Vite
+- Vue 3 (Composition API)
+- Vite
 - Element Plus
 - Axios
-- Vue Router
 
-## 项目结构
+## 🚀 快速启动
+
+### 前端（无需后端即可预览！）
+
+本项目已内置**演示数据**，无需配置后端和数据库即可查看完整界面效果！
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/LeslieNice1/online-ordering-system.git
+cd online-ordering-system/frontend
+
+# 2. 安装依赖
+npm install
+
+# 3. 启动开发服务器
+npm run dev
+```
+
+访问：http://localhost:5173/ 即可查看完整界面！
+
+### 后端（可选，完整功能需要）
+
+```bash
+# 1. 配置数据库（MySQL 8.0+）
+# 创建数据库：online_ordering
+# 导入 backend/src/main/resources/schema.sql
+
+# 2. 修改配置文件
+# 编辑 backend/src/main/resources/application.properties
+# 填写你的数据库用户名和密码
+
+# 3. 启动后端
+cd backend
+mvn spring-boot:run
+```
+
+后端运行在：http://localhost:8080/
+
+## 📸 界面预览
+
+### 首页 - 热门餐厅
+![首页](./screenshots/home.png)
+
+### 餐厅详情 - 菜单与购物车
+![餐厅详情](./screenshots/restaurant.png)
+
+### 我的订单
+![订单页](./screenshots/orders.png)
+
+## 📂 项目结构
 
 ```
 online-ordering-system/
-├── backend/          # Spring Boot 后端
-│   ├── src/main/java/com/order/system/
-│   │   ├── controller/   # 控制器层
-│   │   ├── service/      # 业务逻辑层
-│   │   ├── mapper/       # 数据访问层
-│   │   ├── entity/       # 实体类
-│   │   └── config/       # 配置类
-│   ├── sql/init.sql     # 数据库初始化脚本
-│   └── pom.xml
-└── frontend/         # Vue 3 前端
-    ├── src/
-    │   ├── views/       # 页面组件
-    │   ├── router/      # 路由配置
-    │   ├── api/         # 接口调用
-    │   ├── App.vue
-    │   └── main.js
-    ├── package.json
-    └── vite.config.js
+├── backend/                # Spring Boot 后端
+│   ├── src/main/java/      # Java 源代码
+│   ├── src/main/resources/ # 配置文件
+│   └── pom.xml            # Maven 配置
+└── frontend/              # Vue 3 前端
+    ├── src/views/          # 页面组件
+    ├── src/router/        # 路由配置
+    └── package.json       # npm 配置
 ```
 
-## 快速启动
+## 🎯 核心功能讲解（面试必备）
 
-### 1. 后端启动
+### 1. 购物车状态管理
+使用 Vue 响应式数组管理购物车数据，同时持久化到 localStorage：
 
-```bash
-# 创建数据库
-mysql -u root -p < backend/sql/init.sql
+```javascript
+const cart = ref(JSON.parse(localStorage.getItem('cart') || '[]'))
 
-# 修改 application.yml 中的数据库密码
-
-# 启动后端
-cd backend
-mvn spring-boot:run
-# 后端运行在 http://localhost:8080
+function addToCart(item) {
+  // 更新 cart 数组
+  localStorage.setItem('cart', JSON.stringify(cart.value))
+}
 ```
 
-### 2. 前端启动
+### 2. RESTful API 设计
+遵循 REST 规范设计接口：
 
-```bash
-cd frontend
-npm install
-npm run dev
-# 前端运行在 http://localhost:5173
+```
+GET    /api/restaurant/list     获取餐厅列表
+GET    /api/restaurant/{id}     获取餐厅详情
+GET    /api/menu/list?rid={id} 获取菜单
+POST   /api/order/create       创建订单
+GET    /api/order/user/{id}    查询用户订单
 ```
 
-## 功能模块
+### 3. 订单创建流程
+涉及多个步骤：校验购物车 → 计算金额 → 锁定库存 → 生成订单号 → 扣减库存
 
-| 模块 | 功能 |
-|------|------|
-| 用户模块 | 注册、登录 |
-| 餐厅模块 | 餐厅列表、餐厅详情 |
-| 菜单模块 | 菜单列表、菜单详情 |
-| 购物车 | 加入购物车、购物车管理 |
-| 订单模块 | 创建订单、订单列表 |
+## 📧 联系我
 
-## 接口说明
+- GitHub：[@LeslieNice1](https://github.com/LeslieNice1)
+- 邮箱：xxxx@example.com
 
-| 接口 | 方法 | 说明 |
-|------|------|------|
-| `/api/user/login` | POST | 用户登录 |
-| `/api/user/register` | POST | 用户注册 |
-| `/api/restaurant/list` | GET | 餐厅列表 |
-| `/api/menu/list?restaurantId=` | GET | 菜单列表 |
-| `/api/order/create` | POST | 创建订单 |
+---
 
-## 作者
-
-曹成 - 2026 届本科应届生 - 湖南涉外经济学院 - 数据科学与大数据技术专业
-
-##  license
-
-MIT
+⭐ 如果这个项目对你有帮助，欢迎给个 Star！
